@@ -2,11 +2,12 @@
 // WD-302
 
 import express from 'express';
-
+import bodyParser from "body-parser";
 const __dirname = import.meta.dirname;
 
 const app = express();
 app.use(express.static('public'));
+const urlEncoderParser = bodyParser.urlencoded({extended: false});
 
 // Home page
 app.get('/', (req, res) => {
@@ -37,6 +38,7 @@ const server = app.listen(5000, () => {
 })
 
 // Student page
+// GET
 app.get('/getStudent', (req, res) => {
     var response = {
         studentID: req.query.studentID,
@@ -49,7 +51,21 @@ app.get('/getStudent', (req, res) => {
     res.end(`Received Data: ${JSON.stringify(response)}`);
 })
 
+// POST
+app.post('/postStudent', urlEncoderParser, (req, res) => {
+    var response = {
+        studentID: req.body.studentID,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        section: req.body.section,
+    }
+    
+    console.log("Response is: ", response);
+    res.end(`Received Data: ${JSON.stringify(response)}`);
+})
+
 // Admin page
+// GET
 app.get('/getAdmin', (req, res) => {
     var response = {
         adminID: req.query.adminID,
@@ -62,6 +78,20 @@ app.get('/getAdmin', (req, res) => {
     res.end(`Received Data: ${JSON.stringify(response)}`);
     
 })
+
+// POST
+app.post('/postAdmin', urlEncoderParser, (req, res) => {
+    var response = {
+        adminID: req.body.adminID,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        department: req.body.department,
+    }
+    
+    console.log("Response is: ", response);
+    res.end(`Received Data: ${JSON.stringify(response)}`);
+})
+
 
 // Page Routes
 // Student
